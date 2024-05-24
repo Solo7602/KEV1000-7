@@ -1,0 +1,59 @@
+using System;
+using System.Collections.Generic;
+
+class Graph
+{
+    private int V; // количество вершин
+    private List<int>[] adjList; // список смежности
+
+    public Graph(int v)
+    {
+        V = v;
+        adjList = new List<int>[V];
+        for (int i = 0; i < V; i++)
+        {
+            adjList[i] = new List<int>();
+        }
+    }
+
+    public void AddEdge(int v, int w)
+    {
+        adjList[v].Add(w);
+    }
+
+    private void DFSUtil(int v, bool[] visited)
+    {
+        visited[v] = true;
+        Console.Write(v + " ");
+
+        foreach (int n in adjList[v])
+        {
+            if (!visited[n])
+            {
+                DFSUtil(n, visited);
+            }
+        }
+    }
+
+    public void DFS(int s)
+    {
+        bool[] visited = new bool[V];
+        DFSUtil(s, visited);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Graph g = new Graph(4);
+
+        g.AddEdge(0, 1);
+        g.AddEdge(0, 2);
+        g.AddEdge(1, 2);
+        g.AddEdge(2, 3);
+
+        Console.WriteLine("DFS traversal starting from vertex 0:");
+        g.DFS(0);
+    }
+}
