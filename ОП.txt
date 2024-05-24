@@ -1,0 +1,67 @@
+#include <iostream>
+using namespace std;
+
+struct Plane {
+    string planeName;
+    int planeNumber;
+    Plane* prev;
+    Plane* next;
+};
+
+Plane* head = NULL;
+
+void insertInOrder(string name, int number) {
+    Plane* newNode = new Plane;
+    newNode->planeName = name;
+    newNode->planeNumber = number;
+
+    if (head == NULL) {
+        head = newNode;
+        newNode->prev = NULL;
+        newNode->next = NULL;
+    }
+    else {
+        Plane* current = head;
+        Plane* prev = NULL;
+
+        while (current != NULL && current->planeNumber < number) {
+            prev = current;
+            current = current->next;
+        }
+
+        if (prev == NULL) {
+            newNode->prev = NULL;
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        }
+        else {
+            prev->next = newNode;
+            newNode->prev = prev;
+            newNode->next = current;
+            if (current != NULL) {
+                current->prev = newNode;
+            }
+        }
+    }
+}
+
+void printList() {
+    Plane* current = head;
+    while (current != NULL) {
+        cout << current->planeName << " - " << current->planeNumber << endl;
+        current = current->next;
+    }
+}
+
+int main()
+{
+    insertInOrder("Boeing", 3);
+    insertInOrder("Airbus", 1);
+    insertInOrder("Embraer", 4);
+    insertInOrder("Bombardier", 2);
+    insertInOrder("Cessna", 5);
+    printList();
+
+    return 0;
+}
