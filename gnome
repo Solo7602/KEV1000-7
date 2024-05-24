@@ -1,0 +1,53 @@
+using System;
+
+class GnomeSort
+{
+    public static void Sort(int[] array)
+    {
+        int n = array.Length;
+        int index = 0;
+
+        while (index < n)
+        {
+            if (index == 0)
+            {
+                index++;
+            }
+
+            if (array[index] >= array[index - 1])
+            {
+                index++;
+            }
+            else
+            {
+                int temp = array[index];
+                array[index] = array[index - 1];
+                array[index - 1] = temp;
+                index--;
+            }
+        }
+    }
+
+    public static void Main()
+    {
+        int[] arr = { 6, 3, 9, 5, 2 };
+
+        Console.WriteLine("Исходный массив:");
+        foreach (int i in arr)
+        {
+            Console.Write(i + " ");
+        }
+
+        Console.WriteLine();
+
+        Sort(arr);
+
+        Console.WriteLine("Отсортированный массив:");
+        foreach (int i in arr)
+        {
+            Console.Write(i + " ");
+        }
+    }
+}
+Пояснение:
+Гномья сортировка пройдет массив, сравнивая текущий элемент с предыдущим. Если они стоят в правильном порядке, она продвигается на следующий элемент, в противном случае происходит обмен значениями и она двигается назад, чтобы проверить новую пару элементов.
