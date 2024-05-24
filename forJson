@@ -1,0 +1,29 @@
+Это на 3
+
+using System.Text.Json;
+ 
+// сохранение данных
+using (FileStream fs = new FileStream("user.json", FileMode.OpenOrCreate))
+{
+    Person tom = new Person("Tom", 37);
+    await JsonSerializer.SerializeAsync<Person>(fs, tom);
+    Console.WriteLine("Data has been saved to file");
+}
+ 
+// чтение данных
+using (FileStream fs = new FileStream("user.json", FileMode.OpenOrCreate))
+{
+    Person? person = await JsonSerializer.DeserializeAsync<Person>(fs); //await - это означает что действие выполняется асинхронно
+    Console.WriteLine($"Name: {person?.Name}  Age: {person?.Age}"); //это вывод в консоль(8 строка тоже) 
+}
+ 
+class Person //создаем класс по заданию или если произвольно то сами придумываем
+{
+    public string Name { get;}
+    public int Age { get; set; }
+    public Person(string name, int age) // это конструктор класса, он нужен чтобы вставлять данные мы могли 1 строкой(строка 6)
+    {
+        Name = name;
+        Age = age;
+    }
+}
