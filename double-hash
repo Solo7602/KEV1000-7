@@ -1,0 +1,88 @@
+using System;
+
+class HashTable
+{
+    private int size;
+    private int[] keys;
+    private string[] values;
+    private int[] probes;
+
+    public HashTable(int size)
+    {
+        this.size = size;
+        keys = new int[size];
+        values = new string[size];
+        probes = new int[size];
+    }
+
+    private int HashFunction1(int key)
+    {
+        return key % size;
+    }
+
+    private int HashFunction2(int key)
+    {
+        return 1 + (key % (size - 1));
+    }
+
+    public void Insert(int key, string value)
+    {
+        int index = HashFunction1(key);
+        int step = HashFunction2(key);
+
+        while (keys[index] != 0)
+        {
+            index = (index + step) % size;
+            probes[index]++;
+        }
+
+        keys[index] = key;
+        values[index] = value;
+    }
+
+    public string Search(int key)
+    {
+        int index = HashFunction1(key);
+        int step = HashFunction2(key);
+
+        while (keys[index] != key)
+        {
+            index = (index + step) % size;
+            if (keys[index] == 0)
+            {
+                return "Key not found";
+            }
+        }
+
+        return values[index];
+    }
+
+    public void DisplayProbes()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            Console.WriteLine($"Key: {keys[i]}, Probes: {probes[i]}");
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        HashTable hashTable = new HashTable(10);
+
+        hashTable.Insert(5, "Apple");
+        hashTable.Insert(14, "Banana");
+        hashTable.Insert(23, "Cherry");
+        hashTable.Insert(32, "Orange");
+
+        Console.WriteLine("Search result:");
+        Console.WriteLine(hashTable.Search(23));
+
+        Console.WriteLine("nProbing statistics:");
+        hashTable.DisplayProbes();
+    }
+}
+
+В этом примере показана реализация хэш-таблицы с открытой адресацией и двойным хэшированием на C#. Мы создаем хэш-таблицу определенного размера, используя две хеш-функции для определения индекса для вставки и поиска элементов. Методы вставки, поиска и вывода статистики пробы также реализованы.
