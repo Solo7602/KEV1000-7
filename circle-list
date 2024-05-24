@@ -1,0 +1,119 @@
+using System;
+
+class Node
+{
+    public int data;
+    public Node next;
+
+    public Node(int data)
+    {
+        this.data = data;
+        next = null;
+    }
+}
+
+class CircularLinkedList
+{
+    private Node head;
+
+    public CircularLinkedList()
+    {
+        head = null;
+    }
+
+    public void InsertAt(int index, int data)//Вставка
+    {
+        Node newNode = new Node(data);
+
+        if (head == null)
+        {
+            head = newNode;
+            head.next = head;
+        }
+        else
+        {
+            Node current = head;
+
+            for (int i = 0; i < index - 1; i++)
+            {
+                current = current.next;
+            }
+
+            newNode.next = current.next;
+            current.next = newNode;
+        }
+    }
+
+    public void DeleteAt(int index) //Удаление
+    {
+        if (head == null)
+        {
+            Console.WriteLine("Кольцевой список пуст");
+            return;
+        }
+
+        Node current = head;
+
+        if (index == 0)
+        {
+            Node temp = head;
+            while (current.next != head)
+            {
+                current = current.next;
+            }
+            head = head.next;
+            current.next = head;
+            temp.next = null;
+        }
+        else
+        {
+            for (int i = 0; i < index - 1; i++)
+            {
+                current = current.next;
+            }
+
+            Node temp = current.next;
+            current.next = temp.next;
+            temp.next = null;
+        }
+    }
+
+    public void Display() //Отображение
+    {
+        if (head == null)
+        {
+            Console.WriteLine("Кольцевой список пуст");
+            return;
+        }
+
+        Node current = head;
+        Console.WriteLine("Элементы кольцевого списка:");
+
+        do
+        {
+            Console.Write(current.data + " ");
+            current = current.next;
+        } while (current != head);
+
+        Console.WriteLine();
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        CircularLinkedList cll = new CircularLinkedList();
+
+        cll.InsertAt(0, 1);
+        cll.InsertAt(1, 2);
+        cll.InsertAt(1, 3);
+        cll.InsertAt(3, 4);
+
+        cll.Display();
+
+        cll.DeleteAt(2);
+
+        cll.Display();
+    }
+}
