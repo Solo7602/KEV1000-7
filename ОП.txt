@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-struct Plane {
+struct Plane { //название структуры тоже надо заменить
     string planeName; //названия нужно заменить тут(если строка текста, то string, целочисленное int, c плавающей запятой float(decimal), если дата, то DateTime и тд)
     int planeNumber;
     Plane* prev;
