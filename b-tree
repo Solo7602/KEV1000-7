@@ -1,0 +1,139 @@
+using System;
+
+class Node
+{
+    public int data;
+    public Node left;
+    public Node right;
+
+    public Node(int data)
+    {
+        this.data = data;
+        left = null;
+        right = null;
+    }
+}
+
+class BinarySearchTree
+{
+    private Node root;
+
+    public BinarySearchTree()
+    {
+        root = null;
+    }
+
+    public void Insert(int data) //вставка
+    {
+        root = InsertRecursive(root, data);
+    }
+
+    private Node InsertRecursive(Node current, int data)
+    {
+        if (current == null)
+        {
+            return new Node(data);
+        }
+
+        if (data < current.data)
+        {
+            current.left = InsertRecursive(current.left, data);
+        }
+        else if (data > current.data)
+        {
+            current.right = InsertRecursive(current.right, data);
+        }
+
+        return current;
+    }
+
+    public void Delete(int data) // Удаление
+    {
+        root = DeleteRecursive(root, data);
+    }
+
+    private Node DeleteRecursive(Node current, int data)
+    {
+        if (current == null)
+        {
+            return current;
+        }
+
+        if (data < current.data)
+        {
+            current.left = DeleteRecursive(current.left, data);
+        }
+        else if (data > current.data)
+        {
+            current.right = DeleteRecursive(current.right, data);
+        }
+        else
+        {
+            if (current.left == null)
+            {
+                return current.right;
+            }
+            else if (current.right == null)
+            {
+                return current.left;
+            }
+
+            current.data = MinValue(current.right);
+            current.right = DeleteRecursive(current.right, current.data);
+        }
+
+        return current;
+    }
+
+    private int MinValue(Node node)
+    {
+        int minValue = node.data;
+        while (node.left != null)
+        {
+            minValue = node.left.data;
+            node = node.left;
+        }
+        return minValue;
+    }
+
+    public void InOrderTraversal()
+    {
+        InOrderTraversalRecursive(root);
+        Console.WriteLine();
+    }
+
+    private void InOrderTraversalRecursive(Node node)
+    {
+        if (node != null)
+        {
+            InOrderTraversalRecursive(node.left);
+            Console.Write(node.data + " ");
+            InOrderTraversalRecursive(node.right);
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        BinarySearchTree bst = new BinarySearchTree();
+
+        bst.Insert(5);
+        bst.Insert(3);
+        bst.Insert(7);
+        bst.Insert(2);
+        bst.Insert(4);
+        bst.Insert(6);
+        bst.Insert(8);
+
+        Console.WriteLine("In-order traversal:");
+        bst.InOrderTraversal();
+
+        bst.Delete(3);
+        bst.Delete(7);
+
+        Console.WriteLine("In-order traversal after deleting 3 and 7:");
+        bst.InOrderTraversal();
+    }
+}
