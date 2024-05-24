@@ -1,0 +1,57 @@
+на 3
+using System;
+using System.IO;
+using System.Xml.Serialization;
+
+// Пример класса с данными для сериализации
+public class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Person person = new Person
+        {
+            Name = "Alice",
+            Age = 30
+        };
+
+        XmlSerializer serializer = new XmlSerializer(typeof(Person));
+        using (FileStream fileStream = new FileStream("person.xml", FileMode.Create))
+        {
+            serializer.Serialize(fileStream, person);
+        }
+
+        Console.WriteLine("Object serialized to person.xml");
+    }
+}
+
+
+-------------------------------------------
+using System;
+using System.IO;
+using System.Xml.Serialization;
+
+// Класс с данными для десериализации (может быть тот же класс Person или новый)
+public class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+
+class Program
+{
+    static void Main()
+    {
+        XmlSerializer serializer = new XmlSerializer(typeof(Person));
+        using (FileStream fileStream = new FileStream("person.xml", FileMode.Open))
+        {
+            Person deserializedPerson = (Person)serializer.Deserialize(fileStream);
+            Console.WriteLine($"Name: {deserializedPerson.Name}, Age: {deserializedPerson.Age}");
+        }
+    }
+}
